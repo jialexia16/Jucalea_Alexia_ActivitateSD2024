@@ -90,47 +90,47 @@ struct Masaj* conditieNrMasaje(int nrMasaje, struct Masaj* masaje) {
 	return vectorNou;
 }
 
-
-
-
-void main()
-{
-	int* coduri = malloc(sizeof(int) * 3);
-	coduri[0] = 100;
-	coduri[1] = 101;
-	coduri[2] = 102;
-	struct Masaj m1 = initializareMasaj("MASAJ1", 100.0, 3, coduri);
-	afiseazaMasaj(&m1);
-	printf("Pret mediu uleiuri:  %5.2f ", pretMediuUleiuri(m1));
-	modificaPret(&m1, 10);
-	free(coduri);
-	int* coduri2 = malloc(sizeof(int) * 4);
-	coduri2[0] = 200;
-	coduri2[1] = 201;
-	coduri2[2] = 202;
-	coduri2[3] = 203;
-	int* coduri3 = malloc(sizeof(int) * 3);
-	coduri3[0] = 300;
-	coduri3[1] = 301;
-	coduri3[2] = 302;
-
-	//vector obiecte de tip Masaj
-	struct Masaj* masaje = malloc(sizeof(struct Masaj) * 5);
-	masaje[0] = m1;
-	masaje[1] = initializareMasaj("MASAJ3", 300, 4, coduri2);
-	masaje[2] = initializareMasaj("MASAJ3", 300, 4, coduri2);
-	masaje[3] = initializareMasaj("MASAJ4", 400, 4, coduri2);
-	masaje[4] = initializareMasaj("MASAJ5", 500, 3, coduri3);
-
-
-	//functie creare vector care sa preia masajaele cu nrUleiuri mai mari decat 3
-	printf("\n ------------------------CONDITIE--------------------\n");
-	struct Masaj* masajeConditie = malloc(sizeof(conditieNrMasaje(5, masaje)));
-	masajeConditie = conditieNrMasaje(5, masaje);
-	for (int i = 0; i < 2; i++)
-	{
-		afiseazaMasaj(&masajeConditie[i]);
-	}
-	free(coduri2);
-	free(coduri3);
-}
+//
+//
+//
+//void main()
+//{
+//	int* coduri = malloc(sizeof(int) * 3);
+//	coduri[0] = 100;
+//	coduri[1] = 101;
+//	coduri[2] = 102;
+//	struct Masaj m1 = initializareMasaj("MASAJ1", 100.0, 3, coduri);
+//	afiseazaMasaj(&m1);
+//	printf("Pret mediu uleiuri:  %5.2f ", pretMediuUleiuri(m1));
+//	modificaPret(&m1, 10);
+//	free(coduri);
+//	int* coduri2 = malloc(sizeof(int) * 4);
+//	coduri2[0] = 200;
+//	coduri2[1] = 201;
+//	coduri2[2] = 202;
+//	coduri2[3] = 203;
+//	int* coduri3 = malloc(sizeof(int) * 3);
+//	coduri3[0] = 300;
+//	coduri3[1] = 301;
+//	coduri3[2] = 302;
+//
+//	//vector obiecte de tip Masaj
+//	struct Masaj* masaje = malloc(sizeof(struct Masaj) * 5);
+//	masaje[0] = m1;
+//	masaje[1] = initializareMasaj("MASAJ3", 300, 4, coduri2);
+//	masaje[2] = initializareMasaj("MASAJ3", 300, 4, coduri2);
+//	masaje[3] = initializareMasaj("MASAJ4", 400, 4, coduri2);
+//	masaje[4] = initializareMasaj("MASAJ5", 500, 3, coduri3);
+//
+//
+//	//functie creare vector care sa preia masajaele cu nrUleiuri mai mari decat 3
+//	printf("\n ------------------------CONDITIE--------------------\n");
+//	struct Masaj* masajeConditie = malloc(sizeof(conditieNrMasaje(5, masaje)));
+//	masajeConditie = conditieNrMasaje(5, masaje);
+//	for (int i = 0; i < 2; i++)
+//	{
+//		afiseazaMasaj(&masajeConditie[i]);
+//	}
+//	free(coduri2);
+//	free(coduri3);
+//}
