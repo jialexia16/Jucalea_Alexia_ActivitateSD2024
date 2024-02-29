@@ -90,9 +90,7 @@ struct Masaj* conditieNrMasaje(int nrMasaje, struct Masaj* masaje) {
 	return vectorNou;
 }
 
-//
-//
-//
+
 //void main()
 //{
 //	int* coduri = malloc(sizeof(int) * 3);

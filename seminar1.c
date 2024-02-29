@@ -54,24 +54,24 @@ void stergeCofetarie(struct Cofetarie c)
 	}
 }
 
-//int main()
-//{
-//	/*struct Cofetarie c1;
-//	float* v = malloc(sizeof(float) * 2);
-//	initializareCofetarie("Dulce",3,)
-//	afiseazaCofetarie(c1);*/
-//	float* v = malloc(sizeof(float) * 2);
-//	v[0] = 4567;
-//	v[1] = 3456;
-//	struct Cofetarie c2 = initializareCofetarie("Mara", 2, v);
-//	afiseazaCofetarie(&c2);
-//	free(v);
-//	/*free(c2.nume);
-//	free(c2.salarii);*/
-//	stergeCofetarie(c2);
-//	afiseazaCofetarie(&c2);
-//
-//	/*free(c1.nume);
-//	free(c1.salarii);*/
-//	return 0;
-//}
+int main()
+{
+	/*struct Cofetarie c1;
+	float* v = malloc(sizeof(float) * 2);
+	initializareCofetarie("Dulce",3,)
+	afiseazaCofetarie(c1);*/
+	float* v = malloc(sizeof(float) * 2);
+	v[0] = 4567;
+	v[1] = 3456;
+	struct Cofetarie c2 = initializareCofetarie("Mara", 2, v);
+	afiseazaCofetarie(&c2);
+	free(v);
+	/*free(c2.nume);
+	free(c2.salarii);*/
+	stergeCofetarie(c2);
+	afiseazaCofetarie(&c2);
+
+	/*free(c1.nume);
+	free(c1.salarii);*/
+	return 0;
+}

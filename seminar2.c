@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <malloc.h>
 
@@ -95,33 +96,33 @@ struct Farmacie getFarmacieByID(struct Farmacie* vector, int nrFarmacii, int ID)
 
 
 
-int main() {
-	//int v[40];
-	int nrFarmacii = 4;
-	struct Farmacie* farmacii = (struct Farmacie*)malloc(sizeof(struct Farmacie) * nrFarmacii);
-	for (int i = 0; i < nrFarmacii; i++)
-	{
-		farmacii[i] = initializareFarmacie(i + 1, "Farmacie", 30 * i + 10);
-	}
-
-	afiseazaVector(farmacii, nrFarmacii);
-	int nrFarmaciiCopiate = 2;
-	printf("\n\n");
-	struct Farmacie* farmaciiCopiate = copieazaNElemente(farmacii, nrFarmacii, nrFarmaciiCopiate);
-	afiseazaVector(farmaciiCopiate, nrFarmaciiCopiate);
-	printf("\n\n");
-	int nrFarmaciiMici = 0;
-
-	farmacii[3].suprafata = 20;
-	struct Farmacie* farmaciiMici = copiazaFarmaciiMici(farmacii, nrFarmacii, 50, &nrFarmaciiMici);
-	afiseazaVector(farmaciiMici, nrFarmaciiMici);
-	printf("\n----------------------\n");
-	struct Farmacie f = getFarmacieByID(farmacii, nrFarmacii, 7);
-	afiseazaFarmacie(f);
-	printf("\n----------------------\n");
-	free(f.nume);
-
-	dezalocareVectorFarmacii(&farmacii, &nrFarmacii);
-	dezalocareVectorFarmacii(&farmaciiCopiate, &nrFarmaciiCopiate);
-	dezalocareVectorFarmacii(&farmaciiMici, &nrFarmaciiMici);
-}
+//int main() {
+//	//int v[40];
+//	int nrFarmacii = 4;
+//	struct Farmacie* farmacii = (struct Farmacie*)malloc(sizeof(struct Farmacie) * nrFarmacii);
+//	for (int i = 0; i < nrFarmacii; i++)
+//	{
+//		farmacii[i] = initializareFarmacie(i + 1, "Farmacie", 30 * i + 10);
+//	}
+//
+//	afiseazaVector(farmacii, nrFarmacii);
+//	int nrFarmaciiCopiate = 2;
+//	printf("\n\n");
+//	struct Farmacie* farmaciiCopiate = copieazaNElemente(farmacii, nrFarmacii, nrFarmaciiCopiate);
+//	afiseazaVector(farmaciiCopiate, nrFarmaciiCopiate);
+//	printf("\n\n");
+//	int nrFarmaciiMici = 0;
+//
+//	farmacii[3].suprafata = 20;
+//	struct Farmacie* farmaciiMici = copiazaFarmaciiMici(farmacii, nrFarmacii, 50, &nrFarmaciiMici);
+//	afiseazaVector(farmaciiMici, nrFarmaciiMici);
+//	printf("\n----------------------\n");
+//	struct Farmacie f = getFarmacieByID(farmacii, nrFarmacii, 7);
+//	afiseazaFarmacie(f);
+//	printf("\n----------------------\n");
+//	free(f.nume);
+//
+//	dezalocareVectorFarmacii(&farmacii, &nrFarmacii);
+//	dezalocareVectorFarmacii(&farmaciiCopiate, &nrFarmaciiCopiate);
+//	dezalocareVectorFarmacii(&farmaciiMici, &nrFarmaciiMici);
+//}
