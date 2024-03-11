@@ -1,6 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <malloc.h>
+#include <string.h>
+#include <stdlib.h>
 
 
 
@@ -54,7 +56,7 @@ void afiseazaMasaj(struct Masaj m)
 {
 
 	if (m.denumire != NULL)
-		printf("Nume: %s\n", m.denumire);
+		printf("\n\nNume: %s\n", m.denumire);
 	printf("Pret: %5.2f \n", m.pret);
 	printf("Nr uleiuri: %2d\n", m.nrUleiuri);
 	printf("Uleiuri: ");
@@ -161,11 +163,12 @@ void scrieMasajInFisier(char* file, struct Masaj masaj)
 		return -1;
 	}
 	else {
-		fprintf(fp, "\n%-8s %5.2f %3d\n", masaj.denumire, masaj.pret, masaj.nrUleiuri);
+		fprintf(fp, "%s,%.2f,%d", masaj.denumire, masaj.pret, masaj.nrUleiuri);
 		for (int i = 0; i < masaj.nrUleiuri; i++)
 		{
-			fprintf(fp, "%2d ", masaj.codUleiuri[i]);
+			fprintf(fp, ",%2d", masaj.codUleiuri[i]);
 		}
+		fprintf(fp, "\n");
 	}
 	fclose(fp);
 }
@@ -181,7 +184,7 @@ void scrieVectorMasajeInFisier(char* file, struct Masaj* masaje, int nrMasaje)
 		return -1;
 	}
 	else {
-		fprintf(fp, "%2d\n", 2 * nrMasaje);
+		printf("\nAm scris in fisier!\n");
 		for (int i = 0; i < nrMasaje; i++)
 		{
 			scrieMasajInFisier(file, masaje[i]);
@@ -190,6 +193,60 @@ void scrieVectorMasajeInFisier(char* file, struct Masaj* masaje, int nrMasaje)
 		}
 	}
 	fclose(fp);
+}
+
+
+struct Masaj* adaugaVector(struct Masaj* masaje, struct Masaj m, int* nrMasaje)
+{
+	struct Masaj* aux = (struct Masaj*)malloc(sizeof(struct Masaj) * ((*nrMasaje) + 1));
+	if (aux == NULL)
+	{
+		printf("Eroare la alocarea memoriei!");
+		return NULL;
+	}
+	for (int i = 0; i < (*nrMasaje); i++)
+	{
+		aux[i] = masaje[i];
+	}
+	aux[(*nrMasaje)] = m;
+	(*nrMasaje)++;
+	if (masaje != NULL)
+	{
+		free(masaje);
+	}
+	return aux;
+}
+
+struct Masaj* citesteMasaje(char* file, int* nrMasaje)
+{
+	FILE* f = fopen(file, "r");
+	char linie[100];
+	struct Masaj* masaje = NULL;
+	//struct Masaj* masaje = (struct Masaj*)malloc(sizeof(struct Masaj) * 10);
+	*nrMasaje = 0;
+	char del[] = ",\n";
+	while (fgets(linie, sizeof(linie), f) != NULL)
+	{
+		struct Masaj m;
+		char* token = strtok(linie, del);
+		m.denumire = malloc(strlen(token) + 1);
+		strcpy(m.denumire, token);
+		token = strtok(NULL, del);
+		m.pret = atof(token);
+		token = strtok(NULL, del);
+		m.nrUleiuri = atoi(token);
+		m.codUleiuri = malloc(sizeof(int) * m.nrUleiuri);
+		for (int i = 0; i < m.nrUleiuri; i++)
+		{
+			token = strtok(NULL, del);
+			m.codUleiuri[i] = atoi(token);
+		}
+		masaje = adaugaVector(masaje, m, nrMasaje);
+		//masaje[*nrMasaje] = m;
+		//(*nrMasaje)++;
+	}
+	fclose(f);
+	return masaje;
 }
 
 
@@ -238,13 +295,25 @@ void main()
 	struct Masaj masajCautat = getMasajByPrice(masaje, nrMasaje, 90.0);
 	afiseazaMasaj(masajCautat);
 
-	//scrieMasajInFisier("data.txt", m1);
+	//scrieMasajInFisier("date.txt", m1);
 	//Creati un fisier in care sa aveti minim 10 obiecte de tipul structurii create.Asezarea in fisier a elementelor o faceti la libera alegere.
-	scrieVectorMasajeInFisier("data.txt", masaje, nrMasaje);
+	scrieVectorMasajeInFisier("date.txt", masaje, nrMasaje);
 
+	printf("\n ------------------------MASAJE FISIER--------------------\n");
+
+	int nrMasajeFisier = 0;
+	printf("nr masaje citite: %d", nrMasajeFisier);
+	// struct Masaj* masajeFisier = (struct Masaj*)malloc(sizeof(citesteMasaje("data.txt", &nrMasajeFisier)));
+	struct Masaj* masajeFisier = citesteMasaje("date.txt", &nrMasajeFisier);
+	printf("\n\nnr masaje citite: %d", nrMasajeFisier);
+	afiseazaVector(masajeFisier, nrMasajeFisier);
+
+	dezalocareVectorMasaje(&masajeFisier, &nrMasajeFisier);
 	dezalocareVectorMasaje(&masajeCopiate, &nrMasajeCopiate);
 	dezalocareVectorMasaje(&masajeConditie, &nrMasajeScumpe);
 	dezalocareVectorMasaje(&masaje, &nrMasaje);
 	free(coduri2);
 	free(coduri3);
+	printf("----------------------------------------------------------------");
+
 }
