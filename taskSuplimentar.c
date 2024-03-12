@@ -68,6 +68,22 @@ void afiseazaMasaj(struct Masaj m)
 	printf("\n");
 }
 
+void afiseazaMasajPeOLinie(struct Masaj m)
+{
+
+	if (m.denumire != NULL)
+		printf("\nNume: %s", m.denumire);
+	printf("  Pret: %5.2f", m.pret);
+	printf("  Nr uleiuri: %2d", m.nrUleiuri);
+	printf("  Uleiuri: ");
+	for (int i = 0; i < m.nrUleiuri; i++)
+	{
+
+		printf("%4d ", m.codUleiuri[i]);
+	}
+	//printf("\n");
+}
+
 
 //afiseaza vector
 void afiseazaVector(struct Masaj* masaje, int nrMasaje)
@@ -174,7 +190,7 @@ void scrieMasajInFisier(char* file, struct Masaj masaj)
 }
 
 
-//Scrieti o functie care va salva un vector de obiecte intr - un fisier text.
+//Scrieti o functie care va salva un vector de obiecte intr  un fisier text.
 void scrieVectorMasajeInFisier(char* file, struct Masaj* masaje, int nrMasaje)
 {
 	FILE* fp = fopen(file, "w");
@@ -250,6 +266,42 @@ struct Masaj* citesteMasaje(char* file, int* nrMasaje)
 }
 
 
+//Creati o functie care sa copieze (deep copy) elementele din vector intr o matrice  alocata dinamic
+struct Masaj** copiazaElementeMatrice(struct Masaj* masaje, int nrMasaje, int nrLinii, int* nrColoane)
+{
+	struct Masaj** matrice = (struct Masaj**)malloc(sizeof(struct Masaj*) * nrLinii);
+	for (int i = 0; i < nrLinii; i++)
+	{
+		nrColoane[i] = 0;
+		matrice[i] = NULL;
+	}
+
+	for (int i = 0; i < nrMasaje; i++)
+	{
+		matrice[masaje[i].nrUleiuri - 3] = adaugaVector(matrice[masaje[i].nrUleiuri - 3], masaje[i], &(nrColoane[masaje[i].nrUleiuri - 3]));
+	}
+	return matrice;
+}
+//Scrieti o functie care muta liniile din matrice, astfel incat acestea sa fie sortate  dupa numarul de elemente de pe linie.
+
+
+//Scrieti o functie care sa afiseze elementele dintr  o matrice.
+void afiseazaMatrice(struct Masaj** matrice, int nrLinii, int* nrColoane)
+{
+	for (int i = 0; i < nrLinii; i++)
+	{
+		printf("\nLinia %d", i + 1);
+		printf("\nColoane: %d", nrColoane[i]);
+		for (int j = 0; j < nrColoane[i]; j++)
+		{
+			afiseazaMasajPeOLinie(matrice[i][j]);
+			printf("\n");
+
+		}
+		printf("\n\n");
+	}
+}
+
 void main()
 {
 	int* coduri = malloc(sizeof(int) * 3);
@@ -307,6 +359,14 @@ void main()
 	struct Masaj* masajeFisier = citesteMasaje("date.txt", &nrMasajeFisier);
 	printf("\n\nnr masaje citite: %d", nrMasajeFisier);
 	afiseazaVector(masajeFisier, nrMasajeFisier);
+
+	printf("\n ------------------------MATRICE--------------------\n");
+	int nrLinii = 2;
+	int* nrColoane = (int*)malloc(sizeof(int) * nrLinii);
+	struct Masaj** matrice = (struct Masaj**)malloc(sizeof(struct Masaj*) * nrLinii);
+	matrice = copiazaElementeMatrice(masajeFisier, nrMasajeFisier, nrLinii, nrColoane);
+	afiseazaMatrice(matrice, nrLinii, nrColoane);
+
 
 	dezalocareVectorMasaje(&masajeFisier, &nrMasajeFisier);
 	dezalocareVectorMasaje(&masajeCopiate, &nrMasajeCopiate);
