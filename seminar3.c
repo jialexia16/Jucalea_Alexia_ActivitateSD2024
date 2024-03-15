@@ -84,8 +84,8 @@ void afisareVector(struct Masina* masini, int nrMasini)
 	}
 }
 
-void main() {
-	int nrMasini = 0;
-	struct Masina* masini = citesteMasini("masini.txt", &nrMasini);
-	afisareVector(masini, nrMasini);
-}
+//void main() {
+//	int nrMasini = 0;
+//	struct Masina* masini = citesteMasini("masini.txt", &nrMasini);
+//	afisareVector(masini, nrMasini);
+//}

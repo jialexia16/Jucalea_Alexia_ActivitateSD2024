@@ -154,34 +154,34 @@ void dezalocareMatrice(struct Masina*** matrice, int nrLinii, int** nrColoane)
 }
 
 
-int main()
-{
-	/*int nrMasini = 0;
-	struct Masina* masini = citireFisier("masini.txt", &nrMasini);
-	for (int i = 0; i < nrMasini; i++) {
-		printf("Id: %d\n", masini[i].id);
-		printf("Producator: %s\n", masini[i].producator);
-		printf("Numar usi: %d\n", masini[i].nrUsi);
-		printf("Pret: %5.2f\n", masini[i].pret);
-		printf("\n");
-	}*/
-
-	struct Masini** matrice;
-	int nrLinii = 3;
-	int* nrColoane;
-	nrColoane = (int*)malloc(sizeof(int) * nrLinii);
-	matrice = (struct Masini**)malloc(sizeof(struct Masini*) * nrLinii);
-	for (int i = 0; i < nrLinii; i++)
-	{
-		nrColoane[i] = 0;
-		matrice[i] = NULL;
-	}
-	//afiseazaMatrice(matrice, nrLinii, nrColoane);
-	citireMatrice("masini2.txt", matrice, nrLinii, nrColoane);
-	afiseazaMatrice(matrice, nrLinii, nrColoane);
-	float pret = pretMediu(matrice, nrLinii, nrColoane, 2);
-	printf("\nPret mediu pentru %d usi este %5.2f", 2, pret);
-	printf("\n\nMasina cautata: \n");
-	afiseazaMasina(cautareDupaID(matrice, nrLinii, nrColoane, 5));
-	dezalocareMatrice(&matrice, nrLinii, &nrColoane);
-}
+//int main()
+//{
+//	/*int nrMasini = 0;
+//	struct Masina* masini = citireFisier("masini.txt", &nrMasini);
+//	for (int i = 0; i < nrMasini; i++) {
+//		printf("Id: %d\n", masini[i].id);
+//		printf("Producator: %s\n", masini[i].producator);
+//		printf("Numar usi: %d\n", masini[i].nrUsi);
+//		printf("Pret: %5.2f\n", masini[i].pret);
+//		printf("\n");
+//	}*/
+//
+//	struct Masini** matrice;
+//	int nrLinii = 3;
+//	int* nrColoane;
+//	nrColoane = (int*)malloc(sizeof(int) * nrLinii);
+//	matrice = (struct Masini**)malloc(sizeof(struct Masini*) * nrLinii);
+//	for (int i = 0; i < nrLinii; i++)
+//	{
+//		nrColoane[i] = 0;
+//		matrice[i] = NULL;
+//	}
+//	//afiseazaMatrice(matrice, nrLinii, nrColoane);
+//	citireMatrice("masini2.txt", matrice, nrLinii, nrColoane);
+//	afiseazaMatrice(matrice, nrLinii, nrColoane);
+//	float pret = pretMediu(matrice, nrLinii, nrColoane, 2);
+//	printf("\nPret mediu pentru %d usi este %5.2f", 2, pret);
+//	printf("\n\nMasina cautata: \n");
+//	afiseazaMasina(cautareDupaID(matrice, nrLinii, nrColoane, 5));
+//	dezalocareMatrice(&matrice, nrLinii, &nrColoane);
+//}

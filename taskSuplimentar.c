@@ -3,7 +3,7 @@
 #include <malloc.h>
 #include <string.h>
 #include <stdlib.h>
-
+#include <conio.h>
 
 
 //Alexia Jucalea --> Articolul Masaj
@@ -49,8 +49,6 @@ void modificaPret(struct Masaj* m, float discount)
 		printf("\nNoul pret este: %5.2f", m->pret);
 	}
 }
-
-
 
 void afiseazaMasaj(struct Masaj m)
 {
@@ -165,8 +163,6 @@ struct Masaj getMasajByPrice(struct Masaj* masaje, int nrMasaje, float pret)
 }
 
 //Realizati o functie care concateneaza doi vectori.
-//Scrieti intr - un program C functia care sa citeasca obiectele din fisier si sa le salveze intr - un vector.
-
 
 
 //Scrieti o functie care va salva un obiect  intr - un fisier text.
@@ -190,7 +186,10 @@ void scrieMasajInFisier(char* file, struct Masaj masaj)
 }
 
 
-//Scrieti o functie care va salva un vector de obiecte intr  un fisier text.
+
+
+
+//Scrieti o functie care va salva un vector de obiecte intr - un fisier text.
 void scrieVectorMasajeInFisier(char* file, struct Masaj* masaje, int nrMasaje)
 {
 	FILE* fp = fopen(file, "w");
@@ -210,7 +209,6 @@ void scrieVectorMasajeInFisier(char* file, struct Masaj* masaje, int nrMasaje)
 	}
 	fclose(fp);
 }
-
 
 struct Masaj* adaugaVector(struct Masaj* masaje, struct Masaj m, int* nrMasaje)
 {
@@ -233,6 +231,7 @@ struct Masaj* adaugaVector(struct Masaj* masaje, struct Masaj m, int* nrMasaje)
 	return aux;
 }
 
+//Scrieti intr - un program C functia care sa citeasca obiectele din fisier si sa le salveze intr - un vector.
 struct Masaj* citesteMasaje(char* file, int* nrMasaje)
 {
 	FILE* f = fopen(file, "r");
@@ -266,7 +265,7 @@ struct Masaj* citesteMasaje(char* file, int* nrMasaje)
 }
 
 
-//Creati o functie care sa copieze (deep copy) elementele din vector intr o matrice  alocata dinamic
+//Creati o functie care sa copieze (deep copy) elementele din vector intr o matrice alocata dinamic
 struct Masaj** copiazaElementeMatrice(struct Masaj* masaje, int nrMasaje, int nrLinii, int* nrColoane)
 {
 	struct Masaj** matrice = (struct Masaj**)malloc(sizeof(struct Masaj*) * nrLinii);
@@ -282,7 +281,8 @@ struct Masaj** copiazaElementeMatrice(struct Masaj* masaje, int nrMasaje, int nr
 	}
 	return matrice;
 }
-//Scrieti o functie care muta liniile din matrice, astfel incat acestea sa fie sortate  dupa numarul de elemente de pe linie.
+//Scrieti o functie care muta liniile din matrice, astfel incat acestea sa fie sortate
+//  dupa numarul de elemente de pe linie.
 
 
 //Scrieti o functie care sa afiseze elementele dintr  o matrice.
@@ -301,6 +301,77 @@ void afiseazaMatrice(struct Masaj** matrice, int nrLinii, int* nrColoane)
 		printf("\n\n");
 	}
 }
+
+
+//--------------------------------------------------LISTE-----------------------------------------
+
+struct elem {
+	struct Masaj m;
+	struct elem* urm;
+};
+
+struct Lista {
+	struct elem* prim;
+	struct elem* ultim;
+};
+
+//creare element nou
+struct elem* nou(struct Masaj m, struct elem* urm)
+{
+	struct elem* e = (struct elem*)malloc(sizeof(struct elem));
+	if (!e)
+	{
+		printf("\nMemorie insuficenta.");
+		exit(1);
+	}
+	e->m = m;
+	e->urm = urm;
+	return e;
+}
+
+//adauga element in lista
+struct elem* adaugaInceput(struct Lista* lista, struct Masaj m)
+{
+	struct elem* e = nou(m, lista->prim);
+	lista->prim = e;
+	if (!lista->ultim)
+	{
+		lista->ultim = e;
+	}
+}
+
+struct elem* adaugaSfarsit(struct Lista* lista, struct Masaj m)
+{
+	struct elem* e = nou(m, NULL);
+	if (!lista->ultim)
+	{
+		lista->ultim = lista->prim = e;
+	}
+	else {
+		lista->ultim->urm = e;
+		lista->ultim = e;
+	}
+}
+
+struct elem* preiaElementeInLista(struct Lista* lista, struct Masaj* masaje, int nrMasaje)
+{
+	for (int i = 0; i < nrMasaje; i++)
+	{
+		adaugaInceput(lista, masaje[i]);
+	}
+	return lista->prim;
+}
+
+void afiseazaLista(struct Lista* lista)
+{
+	struct elem* p;
+	for (p = lista->prim; p; p = p->urm)
+	{
+		afiseazaMasaj(p->m);
+	}
+}
+
+
 
 void main()
 {
@@ -366,6 +437,13 @@ void main()
 	struct Masaj** matrice = (struct Masaj**)malloc(sizeof(struct Masaj*) * nrLinii);
 	matrice = copiazaElementeMatrice(masajeFisier, nrMasajeFisier, nrLinii, nrColoane);
 	afiseazaMatrice(matrice, nrLinii, nrColoane);
+
+
+	printf("\n ------------------------LISTA--------------------\n");
+	struct Lista lista;
+	lista.prim = lista.ultim = NULL;
+	lista.prim = preiaElementeInLista(&lista, masaje, nrMasaje);
+	afiseazaLista(&lista);
 
 
 	dezalocareVectorMasaje(&masajeFisier, &nrMasajeFisier);
