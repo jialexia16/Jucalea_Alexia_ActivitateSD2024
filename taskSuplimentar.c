@@ -303,7 +303,49 @@ void afiseazaMatrice(struct Masaj** matrice, int nrLinii, int* nrColoane)
 }
 
 
-//--------------------------------------------------LISTE-----------------------------------------
+//Obiectele pe care le cititi dintr-un fisier le salvati intr-o lista simplu inlantuita.
+//struct Nod{
+//	struct Masaj m;
+//	struct Nod* nexAt;
+//}Nod;
+//
+//void salvareLista(struct Nod** p)
+//
+//{
+//	struct Nod* u = NULL;
+//	int n;
+//	struct Masaj* masaje = citesteMasaje("date.txt", &n);
+//	printf("\n\nnt masaje citite %d:", n);
+//	for (int i = 0; i < n; i++)
+//	{
+//		adaugaInLista(masaje[i], p, &u);
+//	}
+//}
+//
+//void adaugaInLista(struct Masaj m, struct Nod**p, struct Nod*u) 
+//{
+//	struct Nod* c = malloc(sizeof(struct Nod));
+//	c->m = m;
+//	c->next = NULL;
+//	if (p == NULL)
+//	{
+//		p = c;
+//	}
+//	else { u->next = c; }
+//	u = c;
+//}
+//
+//void afiseazaLista(struct Nod *p) {
+//	struct Nod* c;
+//	c = p;
+//	while (c)
+//	{
+//		afiseazaMasaj(c->m);
+//		c = c->next;
+//	}
+//	printf("\n");
+//}
+
 
 struct elem {
 	struct Masaj m;
@@ -330,48 +372,197 @@ struct elem* nou(struct Masaj m, struct elem* urm)
 }
 
 //adauga element in lista
-struct elem* adaugaInceput(struct Lista* lista, struct Masaj m)
+//struct elem* adaugaInceput(struct Lista* lista, struct Masaj m)
+//{
+//	struct elem* e = nou(m, lista->prim);
+//	lista->prim = e;
+//	if (!lista->ultim)
+//	{
+//		lista->ultim = e;
+//	}
+//}
+//
+//struct elem* adaugaSfarsit(struct Lista* lista, struct Masaj m)
+//{
+//	struct elem* e = nou(m, NULL);
+//	if (!lista->ultim)
+//	{
+//		lista->ultim = lista->prim = e;
+//	}
+//	else {
+//		lista->ultim->urm = e;
+//		lista->ultim = e;
+//	}
+//}
+//
+//struct elem* preiaElementeInLista(struct Lista* lista, struct Masaj* masaje, int nrMasaje)
+//{
+//	for (int i = 0; i < nrMasaje; i++)
+//	{
+//		adaugaInceput(lista, masaje[i]);
+//	}
+//	return lista->prim;
+//}
+//
+//void afiseazaLista(struct Lista* lista)
+//{
+//	struct elem* p;
+//	for (p = lista->prim; p; p = p->urm)
+//	{
+//		afiseazaMasaj(p->m);
+//	}
+//}
+
+// varianta de lista simplu inlantuita
+typedef struct Nod Nod;
+struct Nod {
+	struct Masaj masaj;
+	Nod* next;
+};
+
+void inserareInceput(struct Masaj m, Nod** lista)
 {
-	struct elem* e = nou(m, lista->prim);
-	lista->prim = e;
-	if (!lista->ultim)
+	Nod* nod = (Nod*)malloc(sizeof(Nod));
+	nod->masaj = m;
+	nod->next = (*lista);
+	*lista = nod;
+}
+
+void insereazaSfarsit(struct Masaj m, Nod** lista)
+{
+	Nod* nod = (Nod*)malloc(sizeof(Nod));
+	nod->masaj = m;
+	nod->next = NULL;
+
+	if (*lista == NULL)
 	{
-		lista->ultim = e;
+		*lista = nod;
+	}
+	else
+	{
+		Nod* n = *lista;
+		while (n->next != NULL)
+		{
+			n = n->next;
+		}
+		n->next = nod;
 	}
 }
 
-struct elem* adaugaSfarsit(struct Lista* lista, struct Masaj m)
-{
-	struct elem* e = nou(m, NULL);
-	if (!lista->ultim)
-	{
-		lista->ultim = lista->prim = e;
-	}
-	else {
-		lista->ultim->urm = e;
-		lista->ultim = e;
-	}
-}
-
-struct elem* preiaElementeInLista(struct Lista* lista, struct Masaj* masaje, int nrMasaje)
+struct Nod* preiaElementeInLista(struct Nod* lista, struct Masaj* masaje, int nrMasaje)
 {
 	for (int i = 0; i < nrMasaje; i++)
 	{
-		adaugaInceput(lista, masaje[i]);
+		inserareInceput(masaje[i], &lista);
 	}
-	return lista->prim;
+	return lista;
 }
 
-void afiseazaLista(struct Lista* lista)
+void afiseazaLista(Nod* lista)
 {
-	struct elem* p;
-	for (p = lista->prim; p; p = p->urm)
+	while (lista != NULL)
 	{
-		afiseazaMasaj(p->m);
+		afiseazaMasajPeOLinie(lista->masaj);
+		lista = lista->next;
 	}
 }
 
 
+//stergere lista
+void stergereLista(Nod** lista)
+{
+	while (*lista != NULL)
+	{
+		free((*lista)->masaj.denumire);
+		free((*lista)->masaj.codUleiuri);
+		Nod* aux = (*lista)->next;
+		free(*lista);
+		*lista = aux;
+	}
+}
+
+//1. Implementati o functie care sterge un nod de pe o pozitie data ca parametru. Daca lista are mai putine noduri decat index-ul dat, nu se realizeaza stergerea.
+int stergereNodIndex(Nod** lista, int index)
+{
+	int k = 1;
+	Nod* temp, * prev = NULL;
+
+	if (index <= 0) {
+		printf("Am vrut sa sterg nod de pe pozitia invalida.\n");
+		return -1;
+	}
+
+	if (*lista == NULL) {
+		printf("Lista este goala.\n");
+		return -1;
+	}
+
+	if (index == 1)
+	{
+		temp = *lista;
+		*lista = temp->next;
+		free(temp);
+		return 1;
+	}
+	else {
+		temp = *lista;
+		while (temp != NULL && k != index)
+		{
+			prev = temp;
+			temp = temp->next;
+			k++;
+		}
+		if (temp == NULL) {
+			printf("Am vrut sa sterg nod de pe pozitia %d care nu exista.\n", index);
+			return -1;
+		}
+		else
+		{
+			if (temp->next == NULL)
+			{
+				prev->next = NULL;
+				free(temp);
+			}
+			else
+			{
+				prev->next = temp->next;
+				free(temp);
+			}
+
+			return index;
+		}
+	}
+}
+
+//2. Implementati o functie care sa insereze elementele in cadrul listei simplu inlantuite astfel incat acestea a fie sortate crescator dupa un camp la alegerea voastra.
+void inserezaCrescatorDupaPret(Nod** lista, struct Masaj m)
+{
+	Nod* nod = *lista;
+	Nod* prev = NULL;
+	Nod* nodAdaugat = (Nod*)malloc(sizeof(Nod));
+	nodAdaugat->masaj = initializareMasaj(m.denumire, m.pret, m.nrUleiuri, m.codUleiuri);
+	nodAdaugat->next = NULL;
+	if (*lista == NULL)
+	{
+		*lista = nodAdaugat;
+		return;
+	}
+	while (nod != NULL && m.pret > nod->masaj.pret)
+	{
+		prev = nod;
+		nod = nod->next;
+	}
+	if (prev == NULL)
+	{
+		nodAdaugat->next = *lista;
+		*lista = nodAdaugat;
+	}
+	else {
+		prev->next = nodAdaugat;
+		nodAdaugat->next = nod;
+
+	}
+}
 
 void main()
 {
@@ -439,12 +630,28 @@ void main()
 	afiseazaMatrice(matrice, nrLinii, nrColoane);
 
 
-	printf("\n ------------------------LISTA--------------------\n");
-	struct Lista lista;
-	lista.prim = lista.ultim = NULL;
-	lista.prim = preiaElementeInLista(&lista, masaje, nrMasaje);
-	afiseazaLista(&lista);
+	printf("\n ------------------------LISTA SIMPLU INLANTUITA--------------------\n");
+	//struct Lista lista;
+	//lista.prim = lista.ultim = NULL;
+	//lista.prim=preiaElementeInLista(&lista, masaje, nrMasaje);
+	//afiseazaLista(&lista);
+	Nod* lista = NULL;
+	lista = preiaElementeInLista(lista, masaje, nrMasaje);
+	insereazaSfarsit(masaje[0], &lista);
+	afiseazaLista(lista);
+	//stergereLista(&lista);
+	//afiseazaLista(lista);
+	printf("\nAm vrut sa sterg nod de pe pozitia %d", stergereNodIndex(&lista, 6));
+	afiseazaLista(lista);
 
+	printf("\n ------------------------LISTA SIMPLU INLANTUITA ORDONATA--------------------\n");
+	Nod* listaOrdonata = NULL;
+	inserezaCrescatorDupaPret(&listaOrdonata, masaje[0]);
+	inserezaCrescatorDupaPret(&listaOrdonata, masaje[4]);
+	inserezaCrescatorDupaPret(&listaOrdonata, masaje[2]);
+	inserezaCrescatorDupaPret(&listaOrdonata, masaje[1]);
+	inserezaCrescatorDupaPret(&listaOrdonata, masaje[3]);
+	afiseazaLista(listaOrdonata);
 
 	dezalocareVectorMasaje(&masajeFisier, &nrMasajeFisier);
 	dezalocareVectorMasaje(&masajeCopiate, &nrMasajeCopiate);
@@ -452,6 +659,6 @@ void main()
 	dezalocareVectorMasaje(&masaje, &nrMasaje);
 	free(coduri2);
 	free(coduri3);
-	printf("----------------------------------------------------------------");
+	printf("\n----------------------------------------------------------------");
 
 }
